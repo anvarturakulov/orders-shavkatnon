@@ -8,12 +8,10 @@ import { DocSTATUS, DocumentType, SendingHamir } from 'src/interfaces/document.i
 import { UpdateCreateDocumentDto } from './dto/updateCreateDocument.dto';
 import { Request } from 'express';
 import * as TelegramBot from 'node-telegram-bot-api';
-import { ReferencesForTelegramMessage, sendMessageToChanel } from './helper/entry/telegramMessage';
 import { UsersService } from 'src/users/users.service';
 import { ReferencesService } from 'src/references/references.service';
 import { DOCUMENT_NOT_FOUND_ERROR } from './document.constants';
 import { sendMessage } from './helper/entry/sendMessage';
-import { BackupService } from 'src/backup/backup.service';
 import { DuplicateDocs } from './dto/duplicateDocs.dto';
 
 @Controller('documents')
@@ -23,7 +21,6 @@ export class DocumentsController {
         private documentsService: DocumentsService,
         private usersService: UsersService,
         private referencesService: ReferencesService,
-        private backupService: BackupService
     ) {}
 
     

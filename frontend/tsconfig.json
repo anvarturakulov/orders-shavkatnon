@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": ["./types/telegram"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styles from './inputPhone.module.css';
-import { InputProps } from '../input/input.props';
+import { InputPhoneProps } from './inputPhone.props';
 
-export const InputPhone = ({ label, visible=true, className, ...props }: InputProps): JSX.Element => {
-  const [phone, setPhone] = useState('');
+export const InputPhone = ({ phone, setPhone, label, visible=true, className, ...props }: InputPhoneProps): JSX.Element => {
+  
 
   const formatPhoneNumber = (value:string) => {
     // Удаляем всё, кроме цифр

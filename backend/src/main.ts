@@ -11,10 +11,10 @@ async function start() {
     app.setGlobalPrefix('api');
     app.enableCors({
       origin: [
-        "https://osondastur.uz",
         "http://localhost:3000",
         "http://localhost:5000",
         "http://localhost:7000",
+        "https://59a7-37-110-210-194.ngrok-free.app"
       ],
     });
     const config = new DocumentBuilder()

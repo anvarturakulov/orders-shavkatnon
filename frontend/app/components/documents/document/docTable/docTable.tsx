@@ -3,7 +3,6 @@ import styles from './docTable.module.css';
 import cn from 'classnames';
 import TrashIco from './ico/trash.svg';
 import { useAppContext } from '@/app/context/app.context';
-import { SelectReferenceInTable } from '../selects/selectReferenceInTable/selectReferenceInTable';
 import { DocTableItem, DocumentType } from '@/app/interfaces/document.interface';
 import { typeDocumentIsSale } from '@/app/service/documents/typeDocumentIsSale';
 import { InputInTable } from '../inputs/inputInTable/inputInTable';
@@ -68,11 +67,11 @@ export const DocTable = ({ typeReference, items,  className, ...props }: DocTabl
                     [styles.boxWithReciever]: documentIsSaleType,
                 })}>
 
-                    <SelectReferenceInTable 
+                    {/* <SelectReferenceInTable 
                         itemIndexInTable={index}
                         typeReference={typeReference}
                         currentItemId={item.analiticId}
-                    />
+                    /> */}
                     <button className={styles.btnBalance}
                         onClick={() => {
                             getPriceAndBalance(

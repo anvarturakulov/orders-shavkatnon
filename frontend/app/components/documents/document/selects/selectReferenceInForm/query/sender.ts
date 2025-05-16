@@ -8,6 +8,6 @@ export const sender = (item: ReferenceModel, type: string): boolean => {
     if (type == 'sender') {
         return item.refValues?.typeSection == TypeSECTION.FILIAL
     }
-    return false
+    return true
 }
 

@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable, OnModuleInit } from '@nestjs/common';
 import { Reference } from './reference.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { TypeReference } from 'src/interfaces/reference.interface';
+import { TypePartners, TypeReference } from 'src/interfaces/reference.interface';
 import { RefValues } from 'src/refvalues/refValues.model';
 import { UpdateCreateReferenceDto } from './dto/updateCreateReference.dto';
 import { convertJsonRef } from './helpers/convertJsonRef';
+import { NewClietnDTO } from './dto/newClient.dto';
 
 @Injectable()
 export class ReferencesService implements OnModuleInit {
@@ -22,9 +23,9 @@ export class ReferencesService implements OnModuleInit {
 
   // Обновление кэша
   private async updateRefList() {
-    console.time('UpdateRefList');
+    // console.time('UpdateRefList');
     this.refList = await this.referenceRepository.findAll({ include: [RefValues] });
-    console.timeEnd('UpdateRefList');
+    // console.timeEnd('UpdateRefList');
   }
 
   // Получение всех references из кэша
@@ -52,6 +53,21 @@ export class ReferencesService implements OnModuleInit {
       include: [RefValues],
     });
     return reference;
+  }
+
+  async getClientByPhone(phone: string) {
+    const reference = await this.referenceRepository.findOne({
+      where: {},
+      include: [{
+        model: RefValues,
+        where: {
+          phone: phone
+        },
+        required: true
+      }]
+    });
+    if (reference) return reference.id
+    return 0
   }
 
   async getWorker(telegramId: string) {
@@ -102,6 +118,28 @@ export class ReferencesService implements OnModuleInit {
       return reference;
     }
     throw new HttpException('Пользователь не нашёлся', HttpStatus.NOT_FOUND);
+  }
+
+  async createNewClient(dto: NewClietnDTO) {
+    const ref = await this.getClientByPhone(dto.phone)
+    if (ref) return 0
+
+    const reference = await this.referenceRepository.create({
+      name: dto.name,
+      typeReference: TypeReference.PARTNERS,
+    });
+
+    if (reference) {
+      reference.refValues = await this.refValuesRepository.create({ referenceId: reference.id });
+      const newRefValues = {
+        typePartners: TypePartners.CLIENTS, 
+        phone: dto.phone,
+      } 
+      await reference.refValues.update({ ...newRefValues });
+      await this.updateRefList(); // Обновляем кэш после создания
+      return reference.id;
+    }
+    throw new HttpException('Не смогли открыть нового клиента', HttpStatus.NOT_FOUND);
   }
 
   async markToDeleteById(id: number) {

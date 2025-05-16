@@ -52,6 +52,6 @@ export interface UserName {
     name: string,
 }
 
-export const dashboardUsersList = [UserRoles.ADMIN, UserRoles.HEADCOMPANY, UserRoles.GUEST, UserRoles.GLBUX, UserRoles.ZAMGLBUX, UserRoles.ZP];
+export const dashboardUsersList = [UserRoles.ADMIN, UserRoles.HEADCOMPANY, UserRoles.HEADSECTION];
 export const workersUsersList = [UserRoles.DELIVERY, UserRoles.SELLER, UserRoles.HEADSECTION, UserRoles.TANDIR, UserRoles.KASSIR] 
 export const adminAndHeadCompany = [UserRoles.ADMIN, UserRoles.HEADCOMPANY, UserRoles.GLBUX]

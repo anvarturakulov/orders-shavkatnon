@@ -1,41 +1,15 @@
-.container{
-  display: grid;
-  grid-template-columns: 1fr;
-  margin: 0 auto;
-  margin-top: 200px;
-  max-width: 900px;
-  border-radius: 20px;
-  box-shadow: 4px 4px 8px -5px rgba(34, 60, 80, 0.14);
-  position: relative;
-}
-
-.content{
-  padding: 10px 30px;
-  max-width: 300px;
-  margin: 0 auto;
-  
-}
-
-.content h3 {
-  color: blue;
-}
-
 .button{
-    display: inline-block;
-    padding: 10px 0px;
-    width: 150px;
+    margin-top: 20px;
+    padding: 10px 0;
+    width: 300px;
     text-align: center;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    background: none;
+    border-radius: 10px;
+    font-size: 16px;
     border: 1px solid var(--black-600);
     color: var(--white);
-    font-weight: 600;
-    background-color: var(--primary);
-    margin-top: 10px;
+    font-weight: 500;
+    background-color: #257161;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 .button:disabled{
@@ -43,3 +17,19 @@
   color: red;
 }
 
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.btnBox{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img{
+  border-radius: 10%;
+}

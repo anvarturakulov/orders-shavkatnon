@@ -1,7 +1,8 @@
-import MainPage from './(site)/page'
-
+import Auth from "./components/auth/Auth";
 export default function Home() {
   return (
-    <MainPage/>
-  )
+    <>
+      <Auth/>
+    </>
+  );
 }

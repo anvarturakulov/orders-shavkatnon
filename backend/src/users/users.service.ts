@@ -36,6 +36,10 @@ export class UsersService {
         return user
     }
 
+    async getUserByTelegramId(telegramId: string) {
+        return await this.userRepository.findOne({ where: { telegramId: String(telegramId) } });
+    }
+
     async getUserById(id: number) {
         const user = await this.userRepository.findOne({where: {id}})
         return user

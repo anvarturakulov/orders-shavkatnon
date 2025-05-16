@@ -141,7 +141,8 @@ export const defaultMainData: Maindata = {
         showDatesDuplicateWindow: false,
         goRequestByDuplicateDocs: false,
         showNewClientWindow: false,
-        newClient: defaultNewClient
+        newClient: defaultNewClient,
+        currentClientId: 0
     },
     users: {
         user: undefined,

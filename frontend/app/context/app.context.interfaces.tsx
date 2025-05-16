@@ -62,6 +62,7 @@ export interface Maindata {
     goRequestByDuplicateDocs: boolean,
     showNewClientWindow: boolean,
     newClient: NewClient
+    currentClientId: number
   },
   users: {
     currentUser: UserModel | undefined,

@@ -34,8 +34,8 @@ export const DocValues = ({ className, ...props }: DocValuesProps): JSX.Element 
     let definedItemIdForReceiver = getDefinedItemIdForReceiver(role, storageIdFromUser, contentName)
     let definedItemIdForSender = getDefinedItemIdForSender(role, storageIdFromUser, contentName)
 
-    const labelForDate = currentDocument.docValues.orderWithDeleviry ? 'Етказ. бериш санаси' : 'Олиб кетиш санаси'
-    const labelForTime = currentDocument.docValues.orderWithDeleviry ? 'Етказ. бериш вакти' : 'Олиб кетиш вакти'
+    const labelForDate = currentDocument.docValues?.orderWithDeleviry ? 'Етказ. бериш санаси' : 'Олиб кетиш санаси'
+    const labelForTime = currentDocument.docValues?.orderWithDeleviry ? 'Етказ. бериш вакти' : 'Олиб кетиш вакти'
 
     const orderDateAndTime = (
         <div className={styles.dataBoxForOrder}>

@@ -1,0 +1,51 @@
+.title{
+  font-size: 16px;
+  text-align: center;
+  font-weight: 700;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  /* border-bottom: 1px solid #000; */
+}
+
+.timeAndDate{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.infoBox{
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  gap: 10px;
+  margin: 10px 0px;
+  /* border-bottom: 0.5px solid #257161; */
+}
+
+.infoBox div{
+  font-weight: 500;
+  /* color: #257161; */
+  /* font-weight: 500; */
+  color: red;
+}
+
+.infoBoxCount div {
+  color: red;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.infoBoxCount {
+  margin: 10px 0px;
+}
+
+.orderBox {
+  margin-top: 5px;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+  padding: 10px 0;
+}
+
+.timeAndDate span{
+  color: red;
+  font-weight: 500;
+}

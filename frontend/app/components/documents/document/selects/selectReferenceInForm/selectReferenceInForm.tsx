@@ -14,8 +14,9 @@ export const SelectReferenceInForm = ({ label, typeReference, visibile=true , de
     const {mainData, setMainData} = useAppContext();
     const { user } = mainData.users;
     const token = user?.token;
+    
     const url = process.env.NEXT_PUBLIC_DOMAIN+'/api/references/byType/'+typeReference;
-    const { data } = useSWR(url, (url) => getDataForSwr(url, token));
+    const { data } = useSWR(token ? url : null, (url) => getDataForSwr(url, token));
 
     const [selected, setSelected] = useState('');
         
@@ -29,6 +30,7 @@ export const SelectReferenceInForm = ({ label, typeReference, visibile=true , de
             setSelected(initialValue)
         }
     }, [data, currentItemId, definedItemId])
+
 
     const changeElements = (e: React.FormEvent<HTMLSelectElement>, setMainData: Function | undefined, mainData: Maindata, type: TypeForSelectInForm, maydaSavdo: boolean | undefined) => {
         
@@ -63,6 +65,7 @@ export const SelectReferenceInForm = ({ label, typeReference, visibile=true , de
     return (
         <div className={styles.box}>
             {label !='' && <div className={styles.label}>{label}</div>}
+
             <select
                 className={cn(styles.select)}
                 {...props}

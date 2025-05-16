@@ -47,9 +47,9 @@ export const cancelSubmit = (setMainData: Function | undefined, mainData: Mainda
     }
 }
 
-export const secondsToDateString = (seconds: number): String => {
-    
-    return new Date(+seconds).toLocaleString()
+export const secondsToDateString = (seconds: number | undefined): String => {
+    if (seconds) return new Date(+seconds).toLocaleDateString()
+    return ''
 }
 
 export const saveDocumentType = (setMainData: Function | undefined, mainData: Maindata) => {

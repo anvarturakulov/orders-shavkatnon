@@ -20,7 +20,6 @@ import { sendMessage } from './helper/entry/sendMessage';
 import { Op } from 'sequelize'; // Используем импорт вместо require
 import { query } from 'src/reports/querys/query';
 import { EntriesService } from 'src/entries/entries.service';
-import { BackupService } from 'src/backup/backup.service';
 import { DuplicateDocs } from './dto/duplicateDocs.dto';
 
 @Injectable()

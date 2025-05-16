@@ -21,15 +21,14 @@ import { StocksModule } from './stocks/stocks.module';
 import { Stock } from './stocks/stock.model';
 import { OborotsModule } from './oborots/oborots.module';
 import { Oborot } from './oborots/oborot.model';
-import { BackupModule } from './backup/backup.module';
-import { BotModule } from './bot/bot.module';
 
 @Module({
     controllers: [],
     providers: [],
     imports: [
         ConfigModule.forRoot({
-            envFilePath: `.${process.env.NODE_ENV}.env`
+            envFilePath: `.${process.env.NODE_ENV}.env`,
+            isGlobal: true,
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
@@ -54,8 +53,6 @@ import { BotModule } from './bot/bot.module';
         ReportsModule,
         StocksModule,
         OborotsModule,
-        BackupModule,
-        BotModule,
     ],
 })
 

@@ -2,9 +2,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import styles from './tabs.module.css';
 import Order from '../order/order';
+import { useAppContext } from '@/app/context/app.context';
 
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState(1);
+  const { mainData, setMainData } = useAppContext();
+  const { user } = mainData.users;
 
   const handleTabClick = (tabNumber:number) => {
     setActiveTab(tabNumber);

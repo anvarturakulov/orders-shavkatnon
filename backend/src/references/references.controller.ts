@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { TypeReference } from 'src/interfaces/reference.interface';
 import { UpdateCreateReferenceDto } from './dto/updateCreateReference.dto';
 import { refsArray } from 'src/dataUpload/refsOut';
+import { NewClietnDTO } from './dto/newClient.dto';
 
 
 @ApiTags('Справочники')
@@ -42,6 +43,17 @@ export class ReferencesController {
         return this.referencesService.getReferenceById(id)
     }
 
+    // getClientByPhone
+
+    @ApiOperation({summary: 'Получение справочника по номеру телефона'})
+    @ApiResponse({status: 200, type: Number})
+    @Roles('ALL')
+    @UseGuards(RolesGuard)
+    @Get('getClientIdByPhone/:phone')
+    getClientByPhone(@Param('phone') phone: string) {
+        return this.referencesService.getClientByPhone(phone)
+    }
+
     @ApiOperation({summary: 'Обновить справочник'})
     @ApiResponse({status: 200, type: Reference})
     @Roles('ALL')
@@ -58,6 +70,17 @@ export class ReferencesController {
     @Post('/create')
     createReference(@Body() dto:UpdateCreateReferenceDto) {
         return this.referencesService.createReference(dto)
+    }
+
+    //getNewClientId
+    @ApiOperation({summary: 'Открыть нового справочники'})
+    @ApiResponse({status: 200, type: Number})
+    @Roles('ALL')
+    @UseGuards(RolesGuard)
+    @Post('/getNewClientId')
+    getNewClientId(@Body() dto:NewClietnDTO) {
+        const clientId = this.referencesService.createNewClient(dto)
+        return clientId 
     }
 
     @ApiOperation({summary: 'Пометить на удаление справочника'})

@@ -20,6 +20,7 @@ interface RefValuesCreationAttrs {
     secondPrice?: number,
     thirdPrice?: number,
     telegramId?: string,
+    phone?: string
 }
 
 @Table({tableName: 'refvalues'})
@@ -105,11 +106,11 @@ export class RefValues extends Model<RefValues, RefValuesCreationAttrs> {
     @Column({
         type: DataType.STRING, allowNull: true,
         unique: true,
-        validate: {
-          is: {
-            args: /^\+?[1-9]\d{1,11}$/, // Пример регулярного выражения для номера телефона
-            msg: 'Некорректный формат номера телефона',
-          }}
+        // validate: {
+        //   is: {
+        //     args: /^\+?[1-9]\d{1,14}$/, // Пример регулярного выражения для номера телефона
+        //     msg: 'Некорректный формат номера телефона',
+        //   }}
         })
     phone?: string;
 
