@@ -14,20 +14,16 @@ export default function Footer({ windowFor ,className, count, total, docCount, .
 
             {
                 total!=undefined && total>0 &&
-                <div>{`Сумма: ${numberValue(total)}`}</div>
+                <div>{`Сум: ${numberValue(total)}`}</div>
 
             }
 
             {
                 docCount!=undefined && docCount>0 &&
-                <div>{`Хужжат сони: ${numberValue(docCount)}`}</div>
+                <div>{`Хуж сони: ${numberValue(docCount)}`}</div>
 
             }
 
-            {
-                docCount!=undefined && docCount>0 && count &&
-                <div>{` Урта сон: ${numberValue(count/docCount)}`}</div>
-            }
 
         </div>
     )

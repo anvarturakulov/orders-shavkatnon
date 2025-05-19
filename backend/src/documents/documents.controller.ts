@@ -55,18 +55,15 @@ export class DocumentsController {
         let documentType = request.query?.documentType ? request.query?.documentType : '' 
         let dateStart = request.query?.dateStart ? +request.query?.dateStart : 0
         let dateEnd = request.query?.dateEnd ? +request.query?.dateEnd : 0
-        console.time(`Database${documentType}-${dateStart}-${dateEnd}`);
         let documents = this.documentsService.getAllDocumentsByTypeForDate(documentType, dateStart, dateEnd)
-        console.timeEnd(`Database${documentType}-${dateStart}-${dateEnd}`);
-        console.time(`Processing${documentType}-${dateStart}-${dateEnd}`);
-        if (documents) {
-            const result = documents.then((value) => {
-                const results = value.map((item:Document) =>{
-                    item.docStatus == DocSTATUS.DELETED
-                })
-            })
-        }
-        console.timeEnd(`Processing${documentType}-${dateStart}-${dateEnd}`);
+        // if (documents) {
+        //     const result = documents.then((value) => {
+        //         const results = value.map((item:Document) =>{
+        //             item.docStatus == DocSTATUS.DELETED
+        //         })
+        //     })
+        // }
+        // console.timeEnd(`Processing${documentType}-${dateStart}-${dateEnd}`);
         return documents
     }
 

@@ -54,42 +54,15 @@ export default function Header({ windowFor ,className, count, total, ...props }:
         }
     }
 
-    let showAddBtn = true
-    if (
-        user?.role == UserRoles.GUEST || 
-        (contentType == 'order' && contentTitle != OrderTypeTitle.OPEN)
-    )
-        {
-            showAddBtn = false
-        } 
 
     return (
         <>
             {
-                contentTitle ?
                 <div className={styles.box}>
-                    <div className={cn(styles.title, 
-                                    {[styles.newWindow] : (isNewReference|| isNewDocument)})}
-                        >{contentTitle} { ( showReferenceWindow || showDocumentWindow ) ? strFirst : strSecond }
-                    </div>
-                    
                     {
-                        <div>{`оралик сана: ${dateStartInStr} дан ${dateEndInStr} гача`}</div>
+                        <div>{`${dateStartInStr} дан ${dateEndInStr} гача`}</div>
                     }
                     <div>
-                        {( showReferenceWindow || showDocumentWindow )? 
-                        <CloseIco 
-                            className={styles.ico}
-                            onClick={() => {
-                                if (setMainData) {
-                                    setMainData('clearControlElements', true);
-                                    setMainData(windowFor == 'reference' ? 'showReferenceWindow':'showDocumentWindow', false);
-                                    setMainData(windowFor == 'reference' ? 'isNewReference': 'isNewDocument' , false);                                    
-                                    }
-                                }}
-                                
-                        />
-                        :
                         <>
                             <DateIco 
                                 className={styles.ico}
@@ -99,23 +72,10 @@ export default function Header({ windowFor ,className, count, total, ...props }:
                                         }
                                     }}
                             />
-                            {
-                            showAddBtn &&
-                            <AddIco 
-                                className={styles.ico}
-                                onClick={() => addNewElement(setMainData, mainData)} 
-                                />
-                            }
-                            
                         </>
-                        
-                    }
                     </div>
                 </div>
-                :
-                <div className={styles.box}>
-                    <div className={styles.title}>Барча хужжатлар руйхати</div>
-                </div>
+                
             }
         </>
     )

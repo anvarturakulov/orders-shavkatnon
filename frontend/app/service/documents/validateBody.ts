@@ -3,9 +3,10 @@ import { DocumentModel, DocumentType } from "../../interfaces/document.interface
 export const validateBody = (body: DocumentModel): Boolean => {
 
   const { date, id, documentType, docTableItems } = body
-  const { analiticId, senderId, receiverId, productForChargeId, total, count } = body.docValues
+  console.log(body)
+  const { analiticId, senderId, receiverId, productForChargeId, total, count, orderTakingDate, orderTakingTime } = body.docValues
 
-  if (!date || !id || !documentType) return false
+  if (!date || !documentType) return false
 
   const documentsWithAnalitic = [
     `${DocumentType.ComeMaterial}`,
@@ -132,6 +133,15 @@ export const validateBody = (body: DocumentModel): Boolean => {
 
   if (documentsWithProductForChargeId.includes(documentType)) {
     if ( !productForChargeId ) return false
+  }
+
+  const documentsOrder = [
+    `${DocumentType.Order}`,
+  ]
+
+  if (documentsOrder.includes(documentType)) {
+    console.log('shu erga keldi')
+    if ( !senderId || !receiverId || !analiticId || !count || !total || !orderTakingDate || !orderTakingTime ) return false
   }
 
   return true

@@ -58,16 +58,40 @@ export class DocumentsService {
   }
 
   async getAllDocumentsByTypeForDate(documentType, dateStart: number, dateEnd: number) {
-    const documents = await this.documentRepository.findAll({
-      where: {
-        documentType,
-        date: {
-          [Op.gte]: dateStart,
-          [Op.lte]: dateEnd,
-        },
+    
+    let whereClouse:any = {
+      documentType,
+      date: {
+        [Op.gte]: dateStart,
+        [Op.lte]: dateEnd,
       },
-      include: [DocValues, DocTableItems],
+    };
+
+    const include:any = [
+      { model: DocValues },
+      { model: DocTableItems },
+    ];
+
+    if (documentType === DocumentType.Order) {
+      whereClouse = {
+        documentType,
+      };
+      include[0] = {
+        model: DocValues,
+        where: {
+          orderTakingDate: {
+            [Op.gte]: dateStart,
+            [Op.lte]: dateEnd,
+          },
+        },
+      };
+    }
+
+    const documents = await this.documentRepository.findAll({
+      where: whereClouse,
+      include,
     });
+
     return documents;
   }
 

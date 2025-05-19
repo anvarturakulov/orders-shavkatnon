@@ -6,6 +6,7 @@ import { Message } from '@/app/components/common/message/message';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import Tabs from '@/app/components/tabs/tabs';
+import { IntervalWindow } from '@/app/components/common/intervalWindow/intervalWindow';
 
 export default function Dashboard() {
 
@@ -25,6 +26,7 @@ export default function Dashboard() {
         <Tabs />
       </div>
       <Message />
+      <IntervalWindow/>
     </>
   )
 }

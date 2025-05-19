@@ -3,6 +3,9 @@ import Image from 'next/image';
 import styles from './tabs.module.css';
 import Order from '../order/order';
 import { useAppContext } from '@/app/context/app.context';
+import { DocumentType } from '@/app/interfaces/document.interface';
+import OrderJournal from '../journals/orderJournal/orderJournal';
+import OrderMiniJournal from '../journals/orderMiniJournal/orderMiniJournal';
 
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState(1);
@@ -10,6 +13,15 @@ export default function Tabs() {
   const { user } = mainData.users;
 
   const handleTabClick = (tabNumber:number) => {
+
+    if (setMainData) {
+      if (tabNumber < 4) setMainData('isNewDocument', true) 
+      else setMainData('isNewDocument', false);
+    
+      if (tabNumber == 4 ) setMainData('contentName', DocumentType.Order)
+    }
+
+     
     setActiveTab(tabNumber);
   };
 
@@ -20,19 +32,46 @@ export default function Tabs() {
           className={`${styles.tab} ${activeTab === 1 ? styles.active : ''}`}
           onClick={() => handleTabClick(1)}
         >
-          Янги
+          Заказ
         </button>
         <button
           className={`${styles.tab} ${activeTab === 2 ? styles.active : ''}`}
           onClick={() => handleTabClick(2)}
         >
-          Руйхат
+          Заклад
         </button>
         <button
           className={`${styles.tab} ${activeTab === 3 ? styles.active : ''}`}
           onClick={() => handleTabClick(3)}
         >
-          Архив
+          Жунатиш
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 4 ? styles.active : ''}`}
+          onClick={() => handleTabClick(4)}
+        >
+          Руйхат
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 5 ? styles.active : ''}`}
+          onClick={() => handleTabClick(5)}
+        >
+          Руйхат
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 6 ? styles.active : ''}`}
+          onClick={() => handleTabClick(6)}
+        >
+          Руйхат
+        </button>
+      </div>
+
+      <div className={styles.tabListBottom}>
+        <button
+          className={`${styles.tab} ${activeTab === 7 ? styles.active : ''}`}
+          onClick={() => handleTabClick(7)}
+        >
+          Ким канча карз
         </button>
       </div>
 
@@ -51,6 +90,29 @@ export default function Tabs() {
           <div className={styles.content}>
             <h2>Контент Вкладки 3</h2>
             <p>Это текст для третьей вкладки.</p>
+          </div>
+        )}
+        {activeTab === 4 && (
+          <div className={styles.content}>
+            <OrderMiniJournal/>
+          </div>
+        )}
+        {activeTab === 5 && (
+          <div className={styles.content}>
+            <h2>Контент Вкладки 5</h2>
+            <p>Это текст для пятой вкладки.</p>
+          </div>
+        )}
+        {activeTab === 6 && (
+          <div className={styles.content}>
+            <h2>Контент Вкладки 6</h2>
+            <p>Это текст для шестой вкладки.</p>
+          </div>
+        )}
+        {activeTab === 7 && (
+          <div className={styles.content}>
+            <h2>Контент Вкладки 7</h2>
+            <p>Это текст для седмой вкладки.</p>
           </div>
         )}
       </div>

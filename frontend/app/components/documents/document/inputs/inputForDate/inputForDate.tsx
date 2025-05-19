@@ -23,9 +23,9 @@ export const InputForDate = ({label, id, className, ...props }: InputForDateProp
         currentVal = (new Date(dateDoc)).toISOString().split("T")[0]
     }
 
-    if (id == 'orderTakingDate') {
-        currentVal = (new Date(dateTaking)).toISOString().split("T")[0]
-    }
+    // if (id == 'orderTakingDate') {
+    //     currentVal = (new Date(dateTaking)).toISOString().split("T")[0]
+    // }
 
     const changeElements = (e: React.FormEvent<HTMLInputElement>, setMainData: Function | undefined, mainData: Maindata) => {
         let {currentDocument} = mainData.document;

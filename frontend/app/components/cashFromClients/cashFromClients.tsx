@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './order.module.css';
+import styles from './cashFromClients.module.css';
 import cn from 'classnames';
 import { InputPhone } from '../common/inputPhone/inputPhone';
 import { SelectReferenceInForm } from '../documents/document/selects/selectReferenceInForm/selectReferenceInForm';
@@ -21,7 +21,7 @@ import { validateBody } from '@/app/service/documents/validateBody';
 import { OrderStatus } from '@/app/interfaces/order.interface';
 import { updateCreateDocument } from '@/app/service/documents/updateCreateDocument';
 
-export default function Order() {
+export default function CashFromClients() {
   const [activeContent, setActiveContent] = useState(1);
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
@@ -174,7 +174,7 @@ export default function Order() {
               visibile={true}
               currentItemId={currentDocument?.docValues.senderId}
               type='sender'
-              definedItemId= {user?.sectionId}
+              definedItemId= {definedItemIdForSender}
           />
         }
 
