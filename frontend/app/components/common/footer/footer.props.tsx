@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export interface FooterProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  windowFor: 'document' | 'reference',
+  windowFor: 'orders' | 'cash' | 'sales',
   count?: number,
   total?: number,
   docCount?: number,

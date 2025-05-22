@@ -1,21 +1,19 @@
 'use client'
-import styles from './orderMiniJournal.module.css'
-import IcoTrash from './ico/trash.svg'
-import IcoSave from './ico/save.svg'
+import styles from './cashMiniJournal.module.css'
 import { useEffect, useMemo, useState } from 'react';
 import { useAppContext } from '@/app/context/app.context';
 import useSWR from 'swr';
 import cn from 'classnames';
 import Header from '../../common/header/header';
 import { getDataForSwr } from '@/app/service/common/getDataForSwr';
-import { deleteItemDocument, getDocStatus, getNameReference, getPhoneReference, remainOneDay, setProvodkaToDoc } from '../helpers/journal.functions';
+import { getDocStatus, getNameReference, getPhoneReference, remainOneDay, setProvodkaToDoc } from '../helpers/journal.functions';
 import { DocSTATUS, DocumentModel, DocumentType } from '@/app/interfaces/document.interface';
 import { dateNumberToString } from '@/app/service/common/converterForDates'
 import Footer from '../../common/footer/footer'
 import { numberValue } from '@/app/service/common/converters'
 import { dashboardUsersList, UserRoles } from '@/app/interfaces/user.interface'
 import { secondsToDateString } from '../../documents/document/doc/helpers/doc.functions'
-import { OrderMiniJournalProps } from './orderMiniJournal.props'
+import { CashMiniJournalProps } from './cashMiniJournal.props'
 import { defineUrlTypeForOrder } from '@/app/service/orders/defineUrlTypeForOrder';
 
 interface FilterForJournal {
@@ -47,12 +45,12 @@ const documentTotal = (item: DocumentModel) => {
 }
 
 const totals = (item: DocumentModel) => {
-    let total = item.docValues?.total;
+    let total = item.docValues?.cashFromPartner || 0;
     let count = item.docValues?.count;
     return {t: total, c:count}
 }
 
-export default function OrderMiniJournal({ className, ...props}:OrderMiniJournalProps):JSX.Element {
+export default function CashMiniJournal({ className, ...props}:CashMiniJournalProps):JSX.Element {
     
     const {mainData, setMainData} = useAppContext();
     const {dateStart, dateEnd} = mainData.window.interval;
@@ -78,7 +76,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
     const token = user?.token;
     const urlType = defineUrlTypeForOrder(contentName)
     
-    let url = process.env.NEXT_PUBLIC_DOMAIN+'/api/documents/byTypeForDate'+'?documentType='+DocumentType.Order+'&dateStart='+dateStartForUrl+'&dateEnd='+dateEndForUrl;
+    let url = process.env.NEXT_PUBLIC_DOMAIN+'/api/documents/byTypeForDate'+'?documentType='+DocumentType.ComeCashFromClients+'&dateStart='+dateStartForUrl+'&dateEnd='+dateEndForUrl;
     
     const urlReferences = process.env.NEXT_PUBLIC_DOMAIN+'/api/references/all/';
 
@@ -91,8 +89,6 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
         setMainData && setMainData('updateDataForDocumentJournal', false);
     }, [showDocumentWindow, updateDataForDocumentJournal])
     
-    
-
     let count:number = 0;
     let total: number = 0;
     let docCount: number = 0;
@@ -103,10 +99,10 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
             documents
                 .sort((a: DocumentModel, b: DocumentModel) => {
                     let dateComparison
-                    if (a.docValues.orderTakingDate && b.docValues.orderTakingDate) {
-                        dateComparison = a.docValues.orderTakingDate - b.docValues.orderTakingDate;
+                    if (a.date && b.date) {
+                        dateComparison = a.date - b.date;
                         if (dateComparison) {
-                            return a.docValues.orderTakingDate - b.docValues.orderTakingDate;
+                            return a.date - b.date;
                         }
                     } else {
                         if (a.id && b.id) {
@@ -139,9 +135,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                                     return (
                                         <tr 
                                             key={key} 
-                                            className={cn(className,{
-                                                [styles.yellow]: (remainOneDay(item.docValues.orderTakingDate) && item.docStatus == DocSTATUS.OPEN)
-                                            })}    
+                                            className={cn(className)}    
                                         >
                                             <td className={cn(className, {
                                                     [styles.deleted]: item.docStatus == DocSTATUS.DELETED 
@@ -158,32 +152,23 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                                             <td></td>
                                             <td>{user.name}</td>
                                             <td className={styles.rowDate}>{secondsToDateString(item.date)}</td>
-                                            <td>{secondsToDateString(item.docValues.orderTakingDate)}</td>
-                                            <td>{item.docValues.orderTakingTime}</td>
+                                            <td>{getNameReference(references,item.docValues?.senderId)}</td>
+                                            {/* <td>{secondsToDateString(item.docValues.orderTakingDate)}</td> */}
+                                            <td className={styles.rowId}>{item.id}</td>
+                                            {/* <td>{item.docValues.orderTakingTime}</td> */}
                                             <td>{getNameReference(references,item.docValues?.receiverId)}</td>
                                             <td>{getPhoneReference(references,item.docValues?.receiverId)}</td>
-                                            <td className={styles.rowId}>{item.id}</td>
                                             
-                                            <td>{getNameReference(references,item.docValues?.senderId)}</td>
-                                            <td>{getNameReference(references,item.docValues?.analiticId)}</td>
-                                            <td>{item.docValues.comment}</td>
-                                            <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.count)}</td>
-                                            <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.price)}</td>
-                                            <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total)}</td>
-                                            <td className={styles.rowAction}>
-                                                <IcoTrash className={styles.icoTrash}
-                                                onClick = {() => deleteItemDocument(item.docStatus, item.id, item.date, token, setMainData, mainData)}
-                                                />
-                                            </td>
-                                            <td className={styles.rowAction}>
-                                                <IcoSave className={styles.icoSave}
-                                                onClick = {() => setProvodkaToDoc(item.id, token ,item.docStatus ,setMainData, mainData, item.docValues?.receiverId, item.docValues?.senderId)}
-                                                />
-                                            </td>
-                                            <td className={cn(styles.rowSumma, styles.tdRed)}>-{numberValue(item.docValues.cashFromPartner)}</td>
-                                            <td>{item.docValues.orderWithDeleviry ? 'Доставка бор': ''}</td>
-                                            <td className={styles.rowId}>{item.docValues.orderAdress}</td>
-                                            <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total - (item.docValues.cashFromPartner ? item.docValues.cashFromPartner: 0))}</td>
+                                            {/* <td>{getNameReference(references,item.docValues?.analiticId)}</td> */}
+                                            {/* <td>{item.docValues.comment}</td> */}
+                                            {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.count)}</td> */}
+                                            {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.price)}</td> */}
+                                            {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total)}</td> */}
+                                            
+                                            <td className={cn(styles.rowSumma, styles.tdRed)}>{numberValue(item.docValues.cashFromPartner)}</td>
+                                            {/* <td>{item.docValues.orderWithDeleviry ? 'Доставка бор': ''}</td> */}
+                                            {/* <td className={styles.rowId}>{item.docValues.orderAdress}</td> */}
+                                            {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total - (item.docValues.cashFromPartner ? item.docValues.cashFromPartner: 0))}</td> */}
                                             
                                         </tr>
                                     )   
@@ -194,7 +179,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                 </div>
             }
             <div className={styles.footer}>
-                {dashboardUsers && <Footer windowFor='orders' total={total} count={count} docCount={docCount}/>} 
+                {dashboardUsers && <Footer windowFor='cash' total={total} count={count} docCount={docCount}/>} 
             </div>
             
         </>

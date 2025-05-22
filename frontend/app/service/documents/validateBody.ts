@@ -4,7 +4,9 @@ export const validateBody = (body: DocumentModel): Boolean => {
 
   const { date, id, documentType, docTableItems } = body
   console.log(body)
-  const { analiticId, senderId, receiverId, productForChargeId, total, count, orderTakingDate, orderTakingTime } = body.docValues
+  const { analiticId, senderId, receiverId, 
+    productForChargeId, total, count, orderTakingDate, 
+    orderTakingTime, cashFromPartner } = body.docValues
 
   if (!date || !documentType) return false
 
@@ -142,6 +144,22 @@ export const validateBody = (body: DocumentModel): Boolean => {
   if (documentsOrder.includes(documentType)) {
     console.log('shu erga keldi')
     if ( !senderId || !receiverId || !analiticId || !count || !total || !orderTakingDate || !orderTakingTime ) return false
+  }
+
+  const cashFromClients = [
+    `${DocumentType.ComeCashFromClients}`,
+  ]
+
+  if (cashFromClients.includes(documentType)) {
+    if ( !senderId || !receiverId || !total ) return false
+  }
+
+  const documentsSale = [
+    `${DocumentType.SaleProdByOrder}`,
+  ]
+
+  if (documentsSale.includes(documentType)) {
+    if ( !senderId || !receiverId || !analiticId || !count || !total ) return false
   }
 
   return true

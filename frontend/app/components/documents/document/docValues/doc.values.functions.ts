@@ -70,19 +70,11 @@ export const getDefinedItemIdForReceiver = (role: UserRoles | undefined, storage
 export const getDefinedItemIdForSender = (role: UserRoles | undefined, storageIdFromUser: number | undefined, contentName: string) => {
   if (role == UserRoles.ADMIN || role == UserRoles.HEADCOMPANY) return 0
   
-  if ( role && (role == UserRoles.GLBUX || role == UserRoles.ZAMGLBUX) && 
-      (
-        contentName == DocumentType.LeaveMaterial ||
-        contentName == DocumentType.LeaveHalfstuff
-      )
-    ) return 0
-
   if (
-    storageIdFromUser &&
-    role &&
-    contentName != DocumentType.ComeCashFromPartners &&
-    contentName != DocumentType.ComeMaterial && 
-    contentName != DocumentType.LeaveHalfstuff 
+    (storageIdFromUser && role) &&
+    (contentName == DocumentType.Order ||
+    contentName == DocumentType.ComeCashFromClients || 
+    contentName == DocumentType.SaleProdByOrder) 
   ) return storageIdFromUser
 
   return 0

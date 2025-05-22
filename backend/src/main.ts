@@ -14,7 +14,7 @@ async function start() {
         "http://localhost:3000",
         "http://localhost:5000",
         "http://localhost:7000",
-        "https://e8e0-95-214-210-204.ngrok-free.app"
+        "https://2eac-95-214-210-113.ngrok-free.app"
       ],
     });
     const config = new DocumentBuilder()

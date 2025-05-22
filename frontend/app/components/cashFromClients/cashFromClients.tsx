@@ -2,30 +2,20 @@ import { useEffect, useState } from 'react';
 import styles from './cashFromClients.module.css';
 import cn from 'classnames';
 import { InputPhone } from '../common/inputPhone/inputPhone';
-import { SelectReferenceInForm } from '../documents/document/selects/selectReferenceInForm/selectReferenceInForm';
-import { TypeReference } from '@/app/interfaces/reference.interface';
 import { DocumentModel, DocumentType } from '@/app/interfaces/document.interface';
 import { useAppContext } from '@/app/context/app.context';
 import { getDefinedItemIdForSender } from '../documents/document/docValues/doc.values.functions';
-import { InputForDate } from '../documents/document/inputs/inputForDate/inputForDate';
-import { InputForTime } from '../documents/document/inputs/inputForTime/inputForTime';
-import { CheckBoxInTable } from '../documents/document/inputs/checkBoxInForm/checkBoxInForm';
 import { InputInForm } from '../documents/document/inputs/inputInForm/inputInForm';
-import { Ticket } from './helpers/ticket';
 import { getClientIdByPhone } from '@/app/service/references/getClientIdByPhone';
-import { InputName } from '../common/inputName/inputName';
 import { showMessage } from '@/app/service/common/showMessage';
-import { getNewClientId } from '@/app/service/references/getNewClientId';
 import { defaultDocument } from '@/app/context/app.context.constants';
 import { validateBody } from '@/app/service/documents/validateBody';
-import { OrderStatus } from '@/app/interfaces/order.interface';
 import { updateCreateDocument } from '@/app/service/documents/updateCreateDocument';
+import { TicketForCashFromClients } from './helpers/ticketForCashFromClients';
 
 export default function CashFromClients() {
   const [activeContent, setActiveContent] = useState(1);
   const [phone, setPhone] = useState('');
-  const [name, setName] = useState('');
-  const [showAddBtn, setShowAddBtn] = useState(false)
 
   const handleNextClick = () => {
     setActiveContent(activeContent + 1);
@@ -43,11 +33,6 @@ export default function CashFromClients() {
   const role = user?.role;
   const storageIdFromUser = user?.sectionId;
 
-  let definedItemIdForSender = getDefinedItemIdForSender(role, storageIdFromUser, contentName)
-
-  const labelForDate = currentDocument.docValues?.orderWithDeleviry ? 'Етказ. бериш санаси' : 'Олиб кетиш санаси'
-  const labelForTime = currentDocument.docValues?.orderWithDeleviry ? 'Етказ. бериш вакти' : 'Олиб кетиш вакти'
-
   useEffect(() => {
     if (setMainData) {
       setMainData('currentDocument', {...defaultDocument});
@@ -62,29 +47,17 @@ export default function CashFromClients() {
           showMessage('Тел ракам киритилмаган','warm',setMainData)
           return
         }
-        setName('')
         clientId = await getClientIdByPhone(phone, setMainData, token);
-      } else {
-        if (!name) {
-          showMessage('Исм киритилмаган','warm',setMainData)
-          return
-        }
+      } 
 
-        if (!phone) {
-          showMessage('Тел ракам киритилмаган','warm',setMainData)
-          return
-        }
-
-        clientId = await getNewClientId(name, phone, setMainData, token)
-        setName('')
-        setPhone('')
-      }
+      const definedItemIdForSender = getDefinedItemIdForSender(role, storageIdFromUser, DocumentType.Order) 
 
       const newCurrentDocument:DocumentModel = {
         ...currentDocument,
         docValues: {
           ...currentDocument.docValues,
-          receiverId: clientId
+          receiverId: definedItemIdForSender,
+          senderId: clientId
         }
       }
 
@@ -94,9 +67,6 @@ export default function CashFromClients() {
 
       if (clientId) {
         handleNextClick()
-        setShowAddBtn(false)
-      } else {
-        setShowAddBtn(true)
       }
 
     } catch (error) {
@@ -109,10 +79,9 @@ export default function CashFromClients() {
     let body: DocumentModel = {
         ...currentDocument,
         date: Date.now(),
-        documentType: DocumentType.Order,
+        documentType: DocumentType.ComeCashFromClients,
         docValues: {
           ...currentDocument.docValues,
-          orderStatus : OrderStatus.OPEN
         }
     }
     if (user?.id) body.userId = user.id
@@ -132,119 +101,49 @@ export default function CashFromClients() {
           (
             <div className={styles.findBox}>
               <InputPhone label='' phone={phone} setPhone={setPhone}/>
-              <button className={cn(styles.button, styles.btnFind)} onClick={() => searchOrAddNewClient('find', name, phone, token, setMainData)}>Мижозни топиш</button>
-              {
-                showAddBtn &&
-                <>
-                  <InputName label='' name={name} setName={setName}/>
-                  <button className={cn(styles.button, styles.btnAdd)} onClick={() => searchOrAddNewClient('add', name, phone, token, setMainData)}>Янги мижоз кушиш</button>
-                </>
-              }  
+              <button className={cn(styles.button, styles.btnFind)} onClick={() => searchOrAddNewClient('find', '', phone, token, setMainData)}>Мижозни топиш</button>
+                
             </div>
           )
         }
-
+        
         { activeContent == 2 && 
-          ( <>
-              <div className={styles.dataBoxForOrder}>
-                <InputForDate label={labelForDate} id='orderTakingDate'/>
-                <InputForTime label={labelForTime} id='orderTakingTime'/>    
-              </div>
-              <div className={styles.deleviryBox}>
-                  <CheckBoxInTable label = 'Ектазиб бериш билан бирга' id={'orderWithDeleviry'}/>
-                  <InputInForm 
-                      nameControl='orderAdress' 
-                      type='text' 
-                      label='' 
-                      visible={currentDocument.docValues?.orderWithDeleviry} 
-                      isNewDocument
-                      disabled ={false}
-                      placeholder='Ектазиб бериш манзили'
-                      />
-              </div>
-            </>
-            
-          )
+          <InputInForm 
+            nameControl='total' 
+            type='number' 
+            label={'Аванс'} 
+            visible={true}
+            disabled={false}
+          />
         }
 
         { activeContent == 3 && 
-          <SelectReferenceInForm 
-              label={'Юк берувчи цех'} 
-              typeReference={TypeReference.STORAGES}
-              visibile={true}
-              currentItemId={currentDocument?.docValues.senderId}
-              type='sender'
-              definedItemId= {definedItemIdForSender}
-          />
-        }
-
-        { activeContent == 4 && 
-          <SelectReferenceInForm 
-              label={'Махсулот'} 
-              typeReference= {TypeReference.TMZ}
-              visibile={true}
-              currentItemId={currentDocument?.docValues.analiticId}
-              type='analitic'
-          />
-        }
-
-        { activeContent == 5 && 
-          <InputInForm 
-            nameControl='count' 
-            type='number' 
-            label='Сон' 
-            visible={true} 
-          />
-        }
-
-        { activeContent == 6 && 
-          <InputInForm 
-            nameControl='price' 
-            type='number' 
-            label='Нархи' 
-            visible={true} 
-          />
-        }
-
-        { activeContent == 7 && 
-          <>
-             <InputInForm 
-                nameControl='cashFromPartner' 
-                type='number' 
-                label={'Аванс'} 
-                visible={true}
-                disabled={false}
-              />
-          </>
-        }
-
-        { activeContent == 8 && 
           <>
             <InputInForm nameControl='comment' type='text' label='Изох' visible={true}/>
             <button 
               className={cn(styles.button, styles.btnPrev)}
               onClick={handlePrevClick}>
-                {`<==`}
+                {`<<==`}
             </button>
           </>
         }
 
-        {activeContent > 1 && activeContent < 8 &&  (
+        {activeContent > 1 && activeContent < 3 &&  (
           <div className={styles.btnBox}>
             <button 
               className={cn(styles.button, styles.btnPrev)}
               onClick={handlePrevClick}>
-                {`<==`}
+                {`<<==`}
             </button>
             <button 
               className={cn(styles.button, styles.btnNext)}
               onClick={handleNextClick}>
-                {`=>>`}
+                {`==>>`}
             </button>
           </div>
         )}
 
-        <Ticket/>
+        <TicketForCashFromClients/>
                 
         <div className={styles.submitBox}>
           <button className={cn(styles.button, styles.btnSend)} onClick={() => submitOrder()}>Тасдиклаш</button>

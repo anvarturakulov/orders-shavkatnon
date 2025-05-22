@@ -6,6 +6,10 @@ import { useAppContext } from '@/app/context/app.context';
 import { DocumentType } from '@/app/interfaces/document.interface';
 import OrderJournal from '../journals/orderJournal/orderJournal';
 import OrderMiniJournal from '../journals/orderMiniJournal/orderMiniJournal';
+import CashFromClients from '../cashFromClients/cashFromClients';
+import CashMiniJournal from '../journals/cashMiniJournal/cashMiniJournal';
+import Sale from '../sale/sale';
+import SaleMiniJournal from '../journals/saleMiniJournal/saleMiniJournal';
 
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState(1);
@@ -82,14 +86,12 @@ export default function Tabs() {
         )}
         {activeTab === 2 && (
           <div className={styles.content}>
-            <h2>Контент Вкладки 2</h2>
-            <p>Это текст для второй вкладки.</p>
+            <CashFromClients/>
           </div>
         )}
         {activeTab === 3 && (
           <div className={styles.content}>
-            <h2>Контент Вкладки 3</h2>
-            <p>Это текст для третьей вкладки.</p>
+            <Sale/>
           </div>
         )}
         {activeTab === 4 && (
@@ -99,14 +101,12 @@ export default function Tabs() {
         )}
         {activeTab === 5 && (
           <div className={styles.content}>
-            <h2>Контент Вкладки 5</h2>
-            <p>Это текст для пятой вкладки.</p>
+            <CashMiniJournal/>
           </div>
         )}
         {activeTab === 6 && (
           <div className={styles.content}>
-            <h2>Контент Вкладки 6</h2>
-            <p>Это текст для шестой вкладки.</p>
+            <SaleMiniJournal/>
           </div>
         )}
         {activeTab === 7 && (

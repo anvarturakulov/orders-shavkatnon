@@ -12,6 +12,11 @@ export const getNewClientId = async (
     return;
   }
 
+  if (!name) {
+    showMessage('Name is required', 'error', setMainData);
+    return;
+  }
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

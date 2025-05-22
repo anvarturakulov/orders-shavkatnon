@@ -1,5 +1,5 @@
 'use client'
-import styles from './orderMiniJournal.module.css'
+import styles from './saleMiniJournal.module.css'
 import IcoTrash from './ico/trash.svg'
 import IcoSave from './ico/save.svg'
 import { useEffect, useMemo, useState } from 'react';
@@ -15,7 +15,7 @@ import Footer from '../../common/footer/footer'
 import { numberValue } from '@/app/service/common/converters'
 import { dashboardUsersList, UserRoles } from '@/app/interfaces/user.interface'
 import { secondsToDateString } from '../../documents/document/doc/helpers/doc.functions'
-import { OrderMiniJournalProps } from './orderMiniJournal.props'
+import { SaleMiniJournalProps } from './saleMiniJournal.props'
 import { defineUrlTypeForOrder } from '@/app/service/orders/defineUrlTypeForOrder';
 
 interface FilterForJournal {
@@ -52,7 +52,7 @@ const totals = (item: DocumentModel) => {
     return {t: total, c:count}
 }
 
-export default function OrderMiniJournal({ className, ...props}:OrderMiniJournalProps):JSX.Element {
+export default function SaleMiniJournal({ className, ...props}:SaleMiniJournalProps):JSX.Element {
     
     const {mainData, setMainData} = useAppContext();
     const {dateStart, dateEnd} = mainData.window.interval;
@@ -78,7 +78,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
     const token = user?.token;
     const urlType = defineUrlTypeForOrder(contentName)
     
-    let url = process.env.NEXT_PUBLIC_DOMAIN+'/api/documents/byTypeForDate'+'?documentType='+DocumentType.Order+'&dateStart='+dateStartForUrl+'&dateEnd='+dateEndForUrl;
+    let url = process.env.NEXT_PUBLIC_DOMAIN+'/api/documents/byTypeForDate'+'?documentType='+DocumentType.SaleProdByOrder+'&dateStart='+dateStartForUrl+'&dateEnd='+dateEndForUrl;
     
     const urlReferences = process.env.NEXT_PUBLIC_DOMAIN+'/api/references/all/';
 
@@ -91,8 +91,6 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
         setMainData && setMainData('updateDataForDocumentJournal', false);
     }, [showDocumentWindow, updateDataForDocumentJournal])
     
-    
-
     let count:number = 0;
     let total: number = 0;
     let docCount: number = 0;
@@ -158,32 +156,23 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                                             <td></td>
                                             <td>{user.name}</td>
                                             <td className={styles.rowDate}>{secondsToDateString(item.date)}</td>
-                                            <td>{secondsToDateString(item.docValues.orderTakingDate)}</td>
-                                            <td>{item.docValues.orderTakingTime}</td>
+                                            <td className={styles.rowId}>{item.id}</td>
+                                            {/* <td></td> */}
+                                            <td>{getNameReference(references,item.docValues?.senderId)}</td>
+                                            {/* <td>{secondsToDateString(item.docValues.orderTakingDate)}</td> */}
+                                            {/* <td>{item.docValues.orderTakingTime}</td> */}
                                             <td>{getNameReference(references,item.docValues?.receiverId)}</td>
                                             <td>{getPhoneReference(references,item.docValues?.receiverId)}</td>
-                                            <td className={styles.rowId}>{item.id}</td>
                                             
-                                            <td>{getNameReference(references,item.docValues?.senderId)}</td>
                                             <td>{getNameReference(references,item.docValues?.analiticId)}</td>
-                                            <td>{item.docValues.comment}</td>
+                                            {/* <td>{item.docValues.comment}</td> */}
                                             <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.count)}</td>
                                             <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.price)}</td>
                                             <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total)}</td>
-                                            <td className={styles.rowAction}>
-                                                <IcoTrash className={styles.icoTrash}
-                                                onClick = {() => deleteItemDocument(item.docStatus, item.id, item.date, token, setMainData, mainData)}
-                                                />
-                                            </td>
-                                            <td className={styles.rowAction}>
-                                                <IcoSave className={styles.icoSave}
-                                                onClick = {() => setProvodkaToDoc(item.id, token ,item.docStatus ,setMainData, mainData, item.docValues?.receiverId, item.docValues?.senderId)}
-                                                />
-                                            </td>
-                                            <td className={cn(styles.rowSumma, styles.tdRed)}>-{numberValue(item.docValues.cashFromPartner)}</td>
-                                            <td>{item.docValues.orderWithDeleviry ? 'Доставка бор': ''}</td>
-                                            <td className={styles.rowId}>{item.docValues.orderAdress}</td>
-                                            <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total - (item.docValues.cashFromPartner ? item.docValues.cashFromPartner: 0))}</td>
+                                            {/* <td className={cn(styles.rowSumma, styles.tdRed)}>-{numberValue(item.docValues.cashFromPartner)}</td> */}
+                                            {/* <td>{item.docValues.orderWithDeleviry ? 'Доставка бор': ''}</td> */}
+                                            {/* <td className={styles.rowId}>{item.docValues.orderAdress}</td> */}
+                                            {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total - (item.docValues.cashFromPartner ? item.docValues.cashFromPartner: 0))}</td> */}
                                             
                                         </tr>
                                     )   

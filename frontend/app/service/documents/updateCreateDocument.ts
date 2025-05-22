@@ -14,6 +14,14 @@ export const updateCreateDocument = (body: DocumentModel, mainData: Maindata, se
   //   ...currentDocument,
   // }
   
+   if (body.docValues.analiticId != undefined && body.docValues.analiticId <= 0) {
+    let newDocValues = {...body.docValues}
+    delete newDocValues.analiticId
+    body = {
+      ...body,
+      docValues: {...newDocValues}
+    }
+  }
   
   if (body.documentType == DocumentType.Order) {
     body.docStatus = DocSTATUS.OPEN

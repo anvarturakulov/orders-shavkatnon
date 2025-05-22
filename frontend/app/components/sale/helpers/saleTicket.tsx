@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import { getDataForSwr } from '@/app/service/common/getDataForSwr';
 import { useEffect } from 'react';
 
-export const Ticket = () => {
+export const TicketForSale = () => {
     
     const {mainData, setMainData} = useAppContext();
     const { currentDocument} = mainData.document;
@@ -23,11 +23,7 @@ export const Ticket = () => {
 
     return (
         <div className={styles.orderBox}>
-          <div className={styles.title}>"Шавкат нон" буюртма чеки</div>
-          <div className={styles.timeAndDate}>
-            <div>Сана: <span>{secondsToDateString(currentDocument.docValues?.orderTakingDate)}</span></div>
-            <div>вакти: <span>{currentDocument.docValues?.orderTakingTime}</span></div>
-          </div>
+          <div className={styles.title}>"Шавкат нон" сотув чеки</div>
           <div className={styles.infoBox}>
             <p>Мижоз:</p>
             <div>{currentDocument.docValues.receiverId ? getNameReference(references, currentDocument.docValues.receiverId) : ''}</div>
@@ -48,29 +44,6 @@ export const Ticket = () => {
             <p>Сумма</p>
             <div>{numberValue(currentDocument.docValues.count)} x {numberValue(currentDocument.docValues.price)} = {numberValue(currentDocument.docValues.total)}</div>
           </div>
-          <div className={styles.infoBox}>
-            <p>Аванс</p>
-            <div>{numberValue(currentDocument.docValues.cashFromPartner)}</div>
-          </div>
-          <div className={styles.infoBox}>
-            <p>Колдик</p>
-            <div>
-              { currentDocument.docValues.cashFromPartner ? numberValue(currentDocument.docValues.total - currentDocument.docValues.cashFromPartner) 
-                : numberValue(currentDocument.docValues.total)
-              }
-            </div>
-          </div>
-          <div className={styles.infoBox}>
-            <p>Изох</p>
-            <div>{currentDocument.docValues.comment}</div>
-          </div>
-          {
-            currentDocument.docValues.orderWithDeleviry && 
-            <div className={styles.infoBox}>
-              <p>Етказ. манзили</p>
-              <div>{currentDocument.docValues.orderAdress}</div>
-            </div>  
-          }
         </div>
     )
 }

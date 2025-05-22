@@ -1,0 +1,71 @@
+.titleBox {
+  text-align: center;
+}
+
+.button{
+  display: inline-block;
+  padding: 10px 0px;
+  width: 150px;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  width: 100%;
+  color: white;
+}
+
+.btnPrev{
+  background-color: orange;
+  border: none;
+}
+
+.btnNext{
+  background-color: #257161;
+  border: none;
+}
+
+.btnFind{
+  background: #257161;
+  color: white;
+  border: none;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.btnAdd{
+  background: orange;
+  color: black;
+  border: none;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.btnSend{
+  border: none;
+  background-color: #257161;
+}
+
+.mainTitle{
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 10px;
+}
+
+.btnBox{
+  margin: 10px 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.orderBox {
+  border: 1px solid #257161;
+  margin-top: 10px;
+  padding: 10px 10px;
+}
+
+.submitBox{
+  margin: 10px 0px;
+}
+

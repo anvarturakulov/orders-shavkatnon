@@ -132,7 +132,7 @@ export class ReferencesService implements OnModuleInit {
     if (reference) {
       reference.refValues = await this.refValuesRepository.create({ referenceId: reference.id });
       const newRefValues = {
-        typePartners: TypePartners.CLIENTS, 
+        typePartners: TypePartners.ORDERCLIENTS, 
         phone: dto.phone,
       } 
       await reference.refValues.update({ ...newRefValues });
