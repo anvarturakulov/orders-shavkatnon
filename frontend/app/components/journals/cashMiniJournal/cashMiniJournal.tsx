@@ -45,7 +45,7 @@ const documentTotal = (item: DocumentModel) => {
 }
 
 const totals = (item: DocumentModel) => {
-    let total = item.docValues?.cashFromPartner || 0;
+    let total = item.docValues?.total || 0;
     let count = item.docValues?.count;
     return {t: total, c:count}
 }
@@ -165,7 +165,7 @@ export default function CashMiniJournal({ className, ...props}:CashMiniJournalPr
                                             {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.price)}</td> */}
                                             {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total)}</td> */}
                                             
-                                            <td className={cn(styles.rowSumma, styles.tdRed)}>{numberValue(item.docValues.cashFromPartner)}</td>
+                                            <td className={cn(styles.rowSumma)}>{numberValue(item.docValues.total)}</td>
                                             {/* <td>{item.docValues.orderWithDeleviry ? 'Доставка бор': ''}</td> */}
                                             {/* <td className={styles.rowId}>{item.docValues.orderAdress}</td> */}
                                             {/* <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total - (item.docValues.cashFromPartner ? item.docValues.cashFromPartner: 0))}</td> */}

@@ -91,8 +91,6 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
         setMainData && setMainData('updateDataForDocumentJournal', false);
     }, [showDocumentWindow, updateDataForDocumentJournal])
     
-    
-
     let count:number = 0;
     let total: number = 0;
     let docCount: number = 0;
@@ -140,7 +138,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                                         <tr 
                                             key={key} 
                                             className={cn(className,{
-                                                [styles.yellow]: (remainOneDay(item.docValues.orderTakingDate) && item.docStatus == DocSTATUS.OPEN)
+                                                // [styles.yellow]: (remainOneDay(item.docValues.orderTakingDate) && item.docStatus == DocSTATUS.OPEN)
                                             })}    
                                         >
                                             <td className={cn(className, {
@@ -172,7 +170,7 @@ export default function OrderMiniJournal({ className, ...props}:OrderMiniJournal
                                             <td className={cn(styles.rowSumma, styles.tdSumma)}>{numberValue(item.docValues.total)}</td>
                                             <td className={styles.rowAction}>
                                                 <IcoTrash className={styles.icoTrash}
-                                                onClick = {() => deleteItemDocument(item.docStatus, item.id, item.date, token, setMainData, mainData)}
+                                                onClick = {() => deleteItemDocument(item.docStatus, item.id, item.date, token, setMainData, mainData, item.docValues?.senderId)}
                                                 />
                                             </td>
                                             <td className={styles.rowAction}>

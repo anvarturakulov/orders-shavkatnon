@@ -28,14 +28,13 @@ export const getUserName = (id: number, mainData: Maindata): string => {
   return 'Аникланмади'
 }
 
-export const deleteItemDocument = (docStatus: DocSTATUS, id: number | undefined, docDate: number| undefined, token: string | undefined, setMainData: Function | undefined, mainData: Maindata) => {
+export const deleteItemDocument = (docStatus: DocSTATUS, id: number | undefined, docDate: number| undefined, token: string | undefined, setMainData: Function | undefined, mainData: Maindata, senderId: number | undefined) => {
   const { user } = mainData.users
 
   if (
     (user?.role == UserRoles.ADMIN || 
-    user?.role == UserRoles.HEADCOMPANY ||
-    user?.role == UserRoles.HEADSECTION ) &&
-    (docStatus == DocSTATUS.DELETED || docStatus == DocSTATUS.OPEN)
+    user?.role == UserRoles.HEADCOMPANY ) ||
+    ((docStatus == DocSTATUS.DELETED || docStatus == DocSTATUS.OPEN) && user?.sectionId == senderId)
   ) {
     markToDeleteDocument(id, setMainData, token)
   } else {
@@ -51,7 +50,7 @@ export const setProvodkaToDoc = (id: number | undefined, token: string | undefin
     if (
         yes && 
         ( user?.role == UserRoles.ADMIN || user?.role == UserRoles.HEADCOMPANY ) || 
-        ( user?.sectionId == receiverId && user?.sectionId != senderId)
+        ( user?.sectionId == senderId)
     ){
       setProvodkaToDocument(id, setMainData, mainData)
     } else {

@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import Image from 'next/image';
 import styles from './tabs.module.css';
 import Order from '../order/order';
 import { useAppContext } from '@/app/context/app.context';
 import { DocumentType } from '@/app/interfaces/document.interface';
-import OrderJournal from '../journals/orderJournal/orderJournal';
 import OrderMiniJournal from '../journals/orderMiniJournal/orderMiniJournal';
 import CashFromClients from '../cashFromClients/cashFromClients';
 import CashMiniJournal from '../journals/cashMiniJournal/cashMiniJournal';
